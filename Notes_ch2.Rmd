@@ -52,7 +52,21 @@ What’s the probability that a tree will die given it experiences drought at 1 
 2.  one or more parameters: “the accumulated number of ways each conjecture could produce the entire data”
 3.  a prior: “the initial plausibility of each conjectured cause of the data”
 
+*likelihood functions*
+the job of the likelihood is to tell us the relative number of ways to see the data w, given values for p and n.
+
+You get likelihood functions by
+1. naming all the possible events
+2. naming the number of times that you sample
+
+
 The difference between a likelihood function and prior is that likelihood links data to parameters and prior is a distribution over possible parameter values.
+
+*parameters*
+Parameters are unknown inputs into the likelihood function that we wish to estimate from data, and they represent the different conjectures for causes or explanations of the data.
+
+*priors*
+The prior is this initial set of plausibilities.For every parameter you intend your Bayesian machine to estimate, you must provide to the machine a prior. When you have a previous estimate to provide to the machine, that can become the prior.
 
 *Example model*
 
@@ -60,7 +74,16 @@ w ∼ Binomial(n,p)
 
 where n = water + land and p ∼ Uniform(0,1)
 
-This notation is saying that the counts of water and land are distributed binomially, with the probability of ‘water’ on each toss. The entire range of possible values for p (which are (0,1)) are equally plausible.
+This notation is saying that The count of “water” observations w is distributed binomially, with probability p of “water” on each toss and n tosses in total. The entire range of possible values for p (which are (0,1)) are equally plausible.
+
+w ∼ Binomial(n,p) is likelihood function 
+p, n, and w are parameters
+priors 
+
+
+Both n and w are data — we believe that we have observed their values without error. That leaves p as an unknown parameter, and our Bayesian machine's job is to describe what the data tell us about it.
+
+Once we run the model with these components, the resulting esimates are provided (aka posterior distribution)
 
 *Bayes' theorum*
 
@@ -89,4 +112,3 @@ A: They can be descriptive in that they can specify associations that can be use
 How do you compare it to other groups? Do you plot the distributions and compare?
 
 A: Yes, I think so
-

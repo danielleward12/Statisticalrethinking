@@ -4,18 +4,15 @@ output: html_document
 date: "2024-07-10"
 ---
 
-
-
 **Ch. 3**
 
 **Aim of chapter - produce a posterior distribution and summarize/interpret it** 
 You sample from the posterior distributions to summarize it
 
 
-So basically, you're interested in the probability of a given outcome so you find it with a model, which includes prior information based on your variable of interests interactions with other variables. Then you take all the outcomes from the model and plot it. Then you sample from these outcomes to describe the probabilities of outcomes from your model. 
+So basically, you're interested in the probability of a given outcome so you find it with a model, which includes prior information based on your variable of interests interactions with other variables. Then you take all the outcomes from the model and plot it. Then you sample from these outcomes to describe the probabilities of observed outcomes. 
 
 credible interval = compatibility interval, which indicates a range of parameter values compatible with the model and data
-
 
 
 ```{r}
@@ -24,7 +21,6 @@ credible interval = compatibility interval, which indicates a range of parameter
 
 library(dplyr); library(ggplot2)
 ```
-
 
 
 ```{r}
