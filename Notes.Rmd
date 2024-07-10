@@ -1,0 +1,117 @@
+---
+title: "notes"
+output: html_document
+date: "2024-07-10"
+---
+
+**Ch. 2**
+
+**Aim of chapter - begin building Bayesian models**
+
+General workflow for model building
+
+1.  Define generative model of the sample
+2.  Define a specific estimand
+3.  Design a statistical way to produce estimate
+4.  Test 3. using 1.
+5.  Analyze sample, summarize
+
+**Garden of forking data**
+
+For each possible explanation of the sample, count all the ways the sample could happen.
+
+Explanations with more ways that produce the sample are more plausible.
+
+So a Bayesian estimate is a count of the relative plausibilities of all the possible explanations.
+
+*So, the first question in your work should be -*
+
+What do you want to estimate?
+
+*Then you can -*
+
+Draw a DAG to identify all the pathways that would make that sample possible.
+
+The DAG should contain:
+
+1.  variables: things we wish to infer and things we observe/don't observe (unobserved variables are called parameters)
+2.  definitions: each variable gets defined and related to one another
+3.  pathways of interactions with arrows
+
+*Next you can ask something like -*
+
+What’s the probability of X% of tree mortality and the outcomes might be - mort, survival, recruit
+
+What’s the probability of mortality with N samples?
+
+What’s the probability that a tree will die given it experiences drought at 1 year lag, 2 year lag, 3 year lag, etc.?
+
+*The model you build will contain 3 main components -*
+
+1.  a likelihood function: “the number of ways each conjecture could produce an observation”
+2.  one or more parameters: “the accumulated number of ways each conjecture could produce the entire data”
+3.  a prior: “the initial plausibility of each conjectured cause of the data”
+
+The difference between a likelihood function and prior is that likelihood links data to parameters and prior is a distribution over possible parameter values.
+
+*Example model*
+
+w ∼ Binomial(n,p)
+
+where n = water + land and p ∼ Uniform(0,1)
+
+This notation is saying that the counts of water and land are distributed binomially, with the probability of ‘water’ on each toss. The entire range of possible values for p (which are (0,1)) are equally plausible.
+
+*Bayes' theorum*
+
+the probability of any particular value of p, considering the data, is equal to the product of the relative plausibility of the data, conditional on p, and the prior plausibility of p, divided by this thing Pr(W,L), which I’ll call the average probability of the data.
+
+The key lesson is that the posterior is proportional to the product of the prior and the probability of the data
+
+*3 ways to compute posterior distributions*
+
+1.  Grid approximation
+2.  Quadratic approximation
+3.  MCMC
+
+Grid approximation is found by multiplying the prior probability of p′ by the likelihood at p′ and repeating this procedure for each value in the grid to generate an approximate picture of the exact posterior distribution.
+
+Quadratic approximation is Gaussian and it can be described in just 2 numbers - center (mean) and its spread (variance).
+
+brms package uses MCMC
+
+**Questions I have**
+
+Is bayesian just descriptive?
+
+A: They can be descriptive in that they can specify associations that can be used to predict outcomes, given observations. Or they may be causal, a theory of how some events produce other events
+
+How do you compare it to other groups? Do you plot the distributions and compare?
+
+A: Yes, I think so
+
+**Ch. 3**
+
+**Aim of chapter - produce a posterior distribution and summarize/interpret it** You sample from the posterior distributions to summarize it
+
+credible interval = compatibility interval, which indicates a range of parameter values compatible with the model and data
+
+
+
+```{r}
+library(brms)
+library(Matrix)
+
+install.packages("Matrix")
+
+ 
+brm(data = list(w = 6), 
+      family = binomial(link = "identity"),
+      w | trials(9) ~ 0 + Intercept,
+      # this is a flat prior
+      prior(beta(1, 1), class = b, lb = 0, ub = 1),
+      iter = 5000, warmup = 1000,
+      seed = 3,
+      file = "fits/b03.01")
+```
+
