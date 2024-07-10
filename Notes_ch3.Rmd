@@ -1,0 +1,97 @@
+---
+title: "notes chapter 3"
+output: html_document
+date: "2024-07-10"
+---
+
+
+
+**Ch. 3**
+
+**Aim of chapter - produce a posterior distribution and summarize/interpret it** 
+You sample from the posterior distributions to summarize it
+
+
+So basically, you're interested in the probability of a given outcome so you find it with a model, which includes prior information based on your variable of interests interactions with other variables. Then you take all the outcomes from the model and plot it. Then you sample from these outcomes to describe the probabilities of outcomes from your model. 
+
+credible interval = compatibility interval, which indicates a range of parameter values compatible with the model and data
+
+
+
+```{r}
+#Coding time! 
+#Using use grid approximation to generate samples and then sampling from it
+
+library(dplyr); library(ggplot2)
+```
+
+
+
+```{r}
+n <- 1000
+n_success <- 6
+n_trials  <- 9
+
+(d <-
+  tibble(p_grid = seq(from = 0, to = 1, length.out = n),
+         # note we're still using a flat uniform prior
+         prior  = 1) |>
+  mutate(likelihood = dbinom(n_success, size = n_trials, prob = p_grid)) |> 
+  mutate(posterior = (likelihood * prior) / sum(likelihood * prior))
+)
+
+
+n_samples <- 1e4
+
+set.seed(3)
+
+samples <-
+  d |>
+  slice_sample(n = n_samples, weight_by = posterior, replace = T)
+
+glimpse(samples)
+
+
+samples |>
+  mutate(sample_number = 1:n()) |> 
+  ggplot(aes(x = sample_number, y = p_grid)) +
+  geom_point(alpha = 1/10) +
+  scale_y_continuous("proportion of water (p)", limits = c(0, 1)) +
+  xlab("sample number")
+```
+
+The plot above shows the proportion water lands for the coin tosses. 
+
+Then the exercise plots the density of these outcomes. If you increase the number of samples then the shape of the density plot will be normal. 
+
+
+```{r}
+d |>
+  slice_sample(n = 1e6, weight_by = posterior, replace = T) |>
+  ggplot(aes(x = p_grid)) +
+  geom_density(fill = "black") +
+  scale_x_continuous("proportion of water (p)", limits = c(0, 1))
+```
+
+Q: Is this a posterior distribution?
+
+I think yes.
+
+
+Then the exercise plots ranges within the posterior distribution (lower 80%, upper 80% and these serve as credible intervals)
+
+
+Practicing with brms now
+```{r}
+library(brms)
+#here is a model
+b3.1 <-
+  brm(data = list(w = 6), 
+      family = binomial(link = "identity"),
+      w | trials(9) ~ 0 + Intercept,
+      # this is a flat prior
+      prior(beta(1, 1), class = b, lb = 0, ub = 1),
+      iter = 5000, warmup = 1000,
+      seed = 3,
+      file = "fits/b03.01")
+```

@@ -1,0 +1,43 @@
+---
+title: "notes chapter 4"
+output: html_document
+date: "2024-07-10"
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+**Ch. 4**
+
+When setting up a simulation there are 3 main steps: 
+1. Think through system 
+2. Create estimator 
+3. Test estimator
+
+*Types of q’s you can ask with height, weight, and sex*
+
+1.  What is the causal effect of H on W?
+2.  What is the causal effect of S on W?
+3.  What is the direct causal effect of S on W?
+
+For 2. and 3. you need to stratify by S
+
+*Categorical variables*
+- indicator (0/1) variables
+- index (1, 2, 3, 4, etc.) variables
+
+Index is better in most cases
+
+
+Finding the total causal effect requires finding the difference between each group's post posterior distribution
+- must use causal contrasting to find the differences 
+- you can't just compare the overlap
+
+
+Then you can show the proportion of one variable that is different from another (ex. what proportion of men are heavier than women?)
+
+
+To find causal contrasts you need to:
+1. compute posterior distribution of each variable using link function
+2. find the differences b/w variables' posterior distributions
+3. summarize last
