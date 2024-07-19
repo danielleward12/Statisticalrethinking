@@ -6,14 +6,11 @@ date: "2024-07-10"
 
 **Ch. 3**
 
-**Aim of chapter - produce a posterior distribution and summarize/interpret it** 
-You sample from the posterior distributions to summarize it
+**Aim of chapter - produce a posterior distribution and summarize/interpret it** You sample from the posterior distributions to summarize it
 
-
-So basically, you're interested in the probability of a given outcome so you find it with a model, which includes prior information based on your variable of interests interactions with other variables. Then you take all the outcomes from the model and plot it. Then you sample from these outcomes to describe the probabilities of observed outcomes. 
+So basically, you're interested in the probability of a given outcome so you find it with a model, which includes prior information based on your variable of interests interactions with other variables. Then you take all the outcomes from the model and plot it. Then you sample from these outcomes to describe the probabilities of observed outcomes.
 
 credible interval = compatibility interval, which indicates a range of parameter values compatible with the model and data
-
 
 ```{r}
 #Coding time! 
@@ -21,7 +18,6 @@ credible interval = compatibility interval, which indicates a range of parameter
 
 library(dplyr); library(ggplot2)
 ```
-
 
 ```{r}
 n <- 1000
@@ -56,10 +52,9 @@ samples |>
   xlab("sample number")
 ```
 
-The plot above shows the proportion water lands for the coin tosses. 
+The plot above shows the proportion water lands for the coin tosses.
 
-Then the exercise plots the density of these outcomes. If you increase the number of samples then the shape of the density plot will be normal. 
-
+Then the exercise plots the density of these outcomes. If you increase the number of samples then the shape of the density plot will be normal.
 
 ```{r}
 d |>
@@ -73,11 +68,10 @@ Q: Is this a posterior distribution?
 
 I think yes.
 
-
 Then the exercise plots ranges within the posterior distribution (lower 80%, upper 80% and these serve as credible intervals)
 
-
 Practicing with brms now
+
 ```{r}
 library(brms)
 #here is a model
